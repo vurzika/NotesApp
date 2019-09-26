@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.viktorija.notesapp.com.viktorija.main.MainActivity"
+android:layout_height="match_parent"
+android:layout_width="match_parent">
+<item
+    android:id="@+id/action_add_sample_data"
+    android:orderInCategory="1"
+    android:title="Add sample data"
+    app:showAsAction="never" />
+
+<item
+    android:id="@+id/action_delete_all"
+    android:orderInCategory="2"
+    android:title="Delete all"
+    app:showAsAction="never" />
+</menu>

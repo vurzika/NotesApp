@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Notes App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="note_text">Room now supports entities with a mapping FTS3 or FTS4 table. Classes annotated with @Entity can now be additionally annotated with @Fts3 or @Fts4 to declare a class with a mapping full-text search table. FTS options for further customization are available via the annotation’s methods. b/62356416</string>
+</resources>
