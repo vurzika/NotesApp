@@ -14,11 +14,13 @@ data class Note(
 
     var title: String,
 
-    var text: String
+    var text: String,
+
+    var isImportant: Boolean
 
 ) {
     // @Ignore constructor for creating new objects manually
     @Ignore
-    constructor(title: String, text: String) : this(0, title, text)
+    constructor(title: String, text: String, isImportant: Boolean) : this(0, title, text, isImportant)
 }
 

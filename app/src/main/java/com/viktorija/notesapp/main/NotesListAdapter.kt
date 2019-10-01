@@ -3,6 +3,7 @@ package com.viktorija.notesapp.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -37,10 +38,24 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
         viewHolder.noteTitle.text = item.title
         viewHolder.noteText.text = item.text
 
+        viewHolder.importantIndicatorIcon.setImageResource(when (item.isImportant) {
+            true -> R.drawable.ic_favirote_selected
+            else -> R.drawable.ic_favorite_not_selected
+        })
+
+
         viewHolder.itemView.setOnClickListener {
             it.findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToDetailsFragment(item.id))
+                MainFragmentDirections.actionMainFragmentToEditFragment(item.id))
+
         }
+
+//        // todo:
+//        viewHolder.imageView.setOnClickListener{
+//            importantNotesViewModel.toggleImportant()
+//        }
+
+
     }
 
     override fun getItemCount() = notes.size
@@ -52,6 +67,8 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
         // Getting references to the views that this ViewHolder will update
         val noteTitle: TextView = itemView.findViewById(R.id.note_title)
         val noteText: TextView = itemView.findViewById(R.id.note_text)
+        val importantIndicatorIcon : ImageView = itemView.findViewById(R.id.note_important)
+
     }
 
 }

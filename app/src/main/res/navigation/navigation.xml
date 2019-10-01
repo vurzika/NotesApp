@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.viktorija.notesapp.main.MainFragment"
-        android:label="MainFragment" >
+        android:label="My Notes">
         <action
             android:id="@+id/action_mainFragment_to_editFragment"
             app:destination="@id/editFragment" />
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_myDayFragment"
+            app:destination="@id/myDayFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_importantFragment"
+            app:destination="@id/importantFragment" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
         android:name="com.viktorija.notesapp.edit.EditFragment"
-        android:label="EditFragment" >
+        android:label="EditFragment">
         <action
             android:id="@+id/action_editFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -30,4 +42,12 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/myDayFragment"
+        android:name="com.viktorija.notesapp.navigation.myDayFragment"
+        android:label="My Day" />
+    <fragment
+        android:id="@+id/importantFragment"
+        android:name="com.viktorija.notesapp.navigation.importantFragment"
+        android:label="Important" />
 </navigation>

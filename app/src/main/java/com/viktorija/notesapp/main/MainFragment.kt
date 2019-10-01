@@ -44,7 +44,7 @@ class MainFragment : Fragment() {
         //Associate the adapter with the RecyclerView.
         binding.notesList.adapter = adapter
 
-        // todo: Add divider
+        // adding divider
         val divider = DividerItemDecoration(context, HORIZONTAL)
         binding.notesList?.addItemDecoration(divider)
 

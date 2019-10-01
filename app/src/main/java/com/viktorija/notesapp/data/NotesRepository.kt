@@ -36,6 +36,9 @@ class NotesRepository private constructor(private val database: AppDatabase) {
         }
     }
 
+    // get list of important notes
+    fun getImportantNotes() = database.noteDao.getImportantNotes();
+
     // singleton for repository
     companion object {
 

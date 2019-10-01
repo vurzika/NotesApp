@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/myDayFragment"
+        android:icon="@drawable/ic_today"
+        android:title="My day" />
+    <item
+        android:id="@+id/importantFragment"
+        android:icon="@drawable/ic_favirote_selected"
+        android:title="Important" />
+</menu>

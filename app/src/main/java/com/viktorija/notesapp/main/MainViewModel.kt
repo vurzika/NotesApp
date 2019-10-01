@@ -34,10 +34,10 @@ class MainViewModel internal constructor(application: Application) : AndroidView
         viewModelScope.launch {
             val allNotes = mutableListOf<Note>()
 
-            allNotes.add(Note("A","abc"));
-            allNotes.add(Note("B","aaa"))
-            allNotes.add(Note("C","bbb"))
-            allNotes.add(Note("D","ccc"))
+            allNotes.add(Note("A","abc", false));
+            allNotes.add(Note("B","aaa", false))
+            allNotes.add(Note("C","bbb", true))
+            allNotes.add(Note("D","ccc", false))
 
             notesRepository.addNotes(allNotes)
         }

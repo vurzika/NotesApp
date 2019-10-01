@@ -7,7 +7,7 @@ import androidx.room.*
 interface NoteDao {
 
     // all methods that update/write data use suspend
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNote(note: Note) : Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -16,9 +16,14 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = :noteId")
     fun getNoteById(noteId : Long) : LiveData<Note>
 
-    // method to get all drinks from the DrinkDatabase to display them on the screen
+    // method to get all notes from the database to display them on the screen
     @Query("SELECT * FROM notes ORDER BY id DESC")
     fun getAll(): LiveData<List<Note>>
+
+    // method to get notes with the Important flag from the database
+    // SQLite does not have a boolean data type. Room maps it to an INTEGER column, mapping true to 1 and false to 0.
+    @Query("SELECT * FROM notes WHERE isImportant=1 ORDER BY id DESC")
+    fun getImportantNotes(): LiveData<List<Note>>
 
     // method to delete all notes
     @Query("DELETE FROM notes")
