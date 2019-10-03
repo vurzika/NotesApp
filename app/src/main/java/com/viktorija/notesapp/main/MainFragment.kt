@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.viktorija.notesapp.R
 import com.viktorija.notesapp.databinding.MainFragmentBinding
 import kotlinx.android.synthetic.main.main_fragment.*
 
@@ -46,11 +47,11 @@ class MainFragment : Fragment() {
 
         // adding divider
         val divider = DividerItemDecoration(context, HORIZONTAL)
-        binding.notesList?.addItemDecoration(divider)
+        binding.notesList.addItemDecoration(divider)
 
 
         // Getting data into the adapter
-        // creating an observer on the nights variable
+        // creating an observer on the notes variable
         viewModel.notes.observe(this, Observer {
             // If data is available, letting adapter know that it has new list
             it?.let {
@@ -74,16 +75,16 @@ class MainFragment : Fragment() {
     // Menu related methods
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(com.viktorija.notesapp.R.menu.menu_main, menu)
+        inflater.inflate(R.menu.menu_main, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            com.viktorija.notesapp.R.id.action_add_sample_data -> {
+            R.id.action_add_sample_data -> {
                 viewModel.addSampleNotes()
                 return true
             }
-            com.viktorija.notesapp.R.id.action_delete_all -> {
+            R.id.action_delete_all -> {
                 viewModel.deleteAllNotes()
                 return true
             }

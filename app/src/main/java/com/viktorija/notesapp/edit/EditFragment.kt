@@ -12,19 +12,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.viktorija.notesapp.R
 import com.viktorija.notesapp.databinding.EditFragmentBinding
 
-//import sun.jvm.hotspot.utilities.IntArray
-
 
 class EditFragment : Fragment() {
 
     // binding variable
-    // todo?
     private lateinit var binding: EditFragmentBinding
 
     // getting arguments passed by navigation
@@ -63,6 +59,7 @@ class EditFragment : Fragment() {
                 binding.noteText.setSelection(binding.noteText.getText().length);
 
                 // when item is loaded ask to update menu to set new icon for favorites button
+                // todo?
                 activity?.invalidateOptionsMenu()
             }
         })
@@ -74,7 +71,6 @@ class EditFragment : Fragment() {
                     it,
                     Toast.LENGTH_SHORT
                 ).show()
-
                 viewModel.resetEventErrorMessage()
             }
         })
@@ -89,23 +85,18 @@ class EditFragment : Fragment() {
         inflater.inflate(R.menu.menu_edit, menu)
     }
 
+    // When we get the note from view model, update the "star" icon in the menu
+    // todo:  pochemu ne ispolzuem observer?
     override fun onPrepareOptionsMenu(menu: Menu) {
-
         // changing menu item based on note status
         viewModel.note.value?.let {
             val menuItem = menu.findItem(R.id.action_important)
 
-            // get icon
-            val icon = ContextCompat.getDrawable(context!!, when (it.isImportant) {
-                true -> R.drawable.ic_favirote_selected
-                else -> R.drawable.ic_favorite_not_selected
-            })
-
-            // change icon tint color to white
-            DrawableCompat.setTint(icon!!, Color.WHITE);
-
             // update icon
-            menuItem.icon = icon
+            menuItem.setIcon(when (it.isImportant) {
+                true -> R.drawable.ic_important_selected_toolbar
+                else -> R.drawable.ic_important_not_selected_toolbar
+            })
         }
 
         super.onPrepareOptionsMenu(menu)
@@ -114,10 +105,12 @@ class EditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_save -> {
+                // todo: pochemu ne napisano: viewModel.saveNote(), zachem if?
                 val noteTitle: String = binding.noteTitle.text.toString()
                 val noteText: String = binding.noteText.text.toString()
 
                 // if saved then return back
+                // todo: pochemu ne peredajom kartinku, a tolko noteTitle i noteText
                 if (viewModel.saveNote(noteTitle, noteText)) {
                     view?.findNavController()?.popBackStack()
                 }

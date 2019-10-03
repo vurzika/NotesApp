@@ -23,7 +23,6 @@ class MainViewModel internal constructor(application: Application) : AndroidView
     /**
      * Property to allow observing list of notes available in system
      */
-    // todo: ?
     val notes = notesRepository.getAllNotes()
 
     /**

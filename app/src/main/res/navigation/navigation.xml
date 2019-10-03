@@ -15,12 +15,6 @@
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_myDayFragment"
-            app:destination="@id/myDayFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_importantFragment"
-            app:destination="@id/importantFragment" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
@@ -43,11 +37,11 @@
             app:argType="long" />
     </fragment>
     <fragment
-        android:id="@+id/myDayFragment"
-        android:name="com.viktorija.notesapp.navigation.myDayFragment"
-        android:label="My Day" />
-    <fragment
         android:id="@+id/importantFragment"
-        android:name="com.viktorija.notesapp.navigation.importantFragment"
-        android:label="Important" />
+        android:name="com.viktorija.notesapp.important.ImportantFragment"
+        android:label="Important" >
+        <action
+            android:id="@+id/action_importantFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
 </navigation>

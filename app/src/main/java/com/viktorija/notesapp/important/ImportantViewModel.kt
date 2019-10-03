@@ -8,7 +8,7 @@ import com.viktorija.notesapp.data.NotesRepository
 import com.viktorija.notesapp.data.database.AppDatabase
 
 
-class ImportantNotesViewModel internal constructor(application: Application) : AndroidViewModel(application) {
+class ImportantViewModel internal constructor(application: Application) : AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
@@ -19,9 +19,9 @@ class ImportantNotesViewModel internal constructor(application: Application) : A
     */
     class Factory(val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ImportantNotesViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(ImportantViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return ImportantNotesViewModel(application) as T
+                return ImportantViewModel(application) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

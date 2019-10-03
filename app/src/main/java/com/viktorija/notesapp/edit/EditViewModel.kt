@@ -74,17 +74,21 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
         _eventErrorMessage.value = null
     }
 
+    // todo: chto delaet etot metod? po strochkam? zachem if else?
     fun toggleImportantFlagOnNote() {
         val note = _note.value
 
         note?.let {
 
-            if (it.id != 0L) {
+            if (editMode) {
+                // todo: ??
+                // opposite value for note
                 it.isImportant = !it.isImportant
 
                 viewModelScope.launch {
                     notesRepository.saveNote(it)
                 }
+                // todo: v kakom sluchae eto vipolnjaetsja?
             } else {
                 _eventErrorMessage.value = "Note must be saved first"
             }

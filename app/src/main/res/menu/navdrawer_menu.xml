@@ -2,11 +2,11 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/myDayFragment"
+        android:id="@+id/mainFragment"
         android:icon="@drawable/ic_today"
-        android:title="My day" />
+        android:title="@string/menu_title_all_tasks" />
     <item
         android:id="@+id/importantFragment"
-        android:icon="@drawable/ic_favirote_selected"
-        android:title="Important" />
+        android:icon="@drawable/ic_important_selected"
+        android:title="@string/menu_title_important_tasks" />
 </menu>

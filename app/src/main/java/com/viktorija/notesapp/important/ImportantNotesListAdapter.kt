@@ -1,4 +1,4 @@
-package com.viktorija.notesapp.main
+package com.viktorija.notesapp.important
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.viktorija.notesapp.R
 import com.viktorija.notesapp.data.database.Note
 
-class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
+class ImportantNotesListAdapter : RecyclerView.Adapter<ImportantNotesListAdapter.ViewHolder>() {
 
     var notes = listOf<Note>()
         set(value) {
@@ -44,10 +44,9 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
             else -> R.drawable.ic_important_not_selected
         })
 
-
         viewHolder.itemView.setOnClickListener {
             it.findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToEditFragment(item.id))
+                ImportantFragmentDirections.actionImportantFragmentToEditFragment(item.id))
         }
 
 //        // todo:

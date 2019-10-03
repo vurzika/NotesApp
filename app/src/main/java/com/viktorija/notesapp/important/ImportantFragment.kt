@@ -11,15 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.viktorija.notesapp.databinding.ImportantFragmentBinding
-import com.viktorija.notesapp.main.NotesListAdapter
 
-class ImportantNotesFragment : Fragment() {
+class ImportantFragment : Fragment() {
 
     private lateinit var binding: ImportantFragmentBinding
 
     // view model setup
-    private val viewModel: ImportantNotesViewModel by viewModels {
-        ImportantNotesViewModel.Factory( requireNotNull(this.activity).application)
+    private val viewModel: ImportantViewModel by viewModels {
+        ImportantViewModel.Factory( requireNotNull(this.activity).application)
     }
 
     override fun onCreateView(
@@ -37,7 +36,7 @@ class ImportantNotesFragment : Fragment() {
 
 
         // Telling RecyclerView about the Adapter
-        val adapter = NotesListAdapter()
+        val adapter = ImportantNotesListAdapter()
 
         //Associate the adapter with the RecyclerView.
         binding.notesList.adapter = adapter
@@ -45,7 +44,6 @@ class ImportantNotesFragment : Fragment() {
         // adding divider
         val divider = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
         binding.notesList.addItemDecoration(divider)
-
 
         // Getting data into the adapter
         // creating an observer on the nights variable
