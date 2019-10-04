@@ -30,7 +30,12 @@ class NotesListAdapter(val clickListener: NoteClickListener) :
     // Create ViewHolder class that extends RecyclerView.ViewHolder.
     class ViewHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        var noteId: Long = 0
+            private set
+
         fun bind(item: Note, clickListener: NoteClickListener) {
+            noteId = item.id
+
             binding.note = item
             binding.clickListener = clickListener
         }
@@ -48,8 +53,14 @@ class NotesListAdapter(val clickListener: NoteClickListener) :
 }
 
 // New class -  NoteClickListener to handle clicks
-class NoteClickListener(val clickListener: (noteId: Long) -> Unit) {
+class NoteClickListener(
+    val clickListener: (noteId: Long) -> Unit,
+    val clickStarListener: (noteId: Long) -> Unit
+) {
+
     fun onClick(note: Note) = clickListener(note.id)
+
+    fun onStarClick(note: Note) = clickStarListener(note.id)
 }
 
 // Implementing SleepNightDiffCallback

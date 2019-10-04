@@ -1,7 +1,10 @@
 package com.viktorija.notesapp.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface NoteDao {
@@ -12,6 +15,9 @@ interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(notes: List<Note>)
+
+    @Query("UPDATE notes SET isImportant = :isImportant WHERE id =:noteId")
+    suspend fun updateIsImportantForNote(noteId: Long, isImportant: Boolean)
 
     @Query("SELECT * FROM notes WHERE id = :noteId")
     fun getNoteById(noteId : Long) : LiveData<Note>
@@ -27,7 +33,10 @@ interface NoteDao {
 
     // method to delete all notes
     @Query("DELETE FROM notes")
-    fun deleteAllNotes()
+    suspend fun deleteAllNotes()
+
+    @Query("DELETE FROM notes WHERE id = :noteId")
+    suspend fun deleteNote(noteId: Long)
 }
 
 

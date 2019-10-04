@@ -1,7 +1,7 @@
 package com.viktorija.notesapp.data
 
-import com.viktorija.notesapp.data.database.Note
 import com.viktorija.notesapp.data.database.AppDatabase
+import com.viktorija.notesapp.data.database.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -33,6 +33,20 @@ class NotesRepository private constructor(private val database: AppDatabase) {
     suspend fun saveNote(newNote: Note) {
         withContext(Dispatchers.IO){
             database.noteDao.saveNote(newNote)
+        }
+    }
+
+    // method to delete note from the database
+    suspend fun deleteNote(noteId: Long) {
+        withContext(Dispatchers.IO) {
+            database.noteDao.deleteNote(noteId)
+        }
+    }
+
+    // method to save note to the database
+    suspend fun updateIsImportantForNote(noteId: Long, isImportant: Boolean) {
+        withContext(Dispatchers.IO) {
+            database.noteDao.updateIsImportantForNote(noteId, isImportant)
         }
     }
 

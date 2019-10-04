@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.viktorija.notesapp.data.NotesRepository
-import com.viktorija.notesapp.data.database.Note
 import com.viktorija.notesapp.data.database.AppDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import com.viktorija.notesapp.data.database.Note
 import kotlinx.coroutines.launch
 
 class MainViewModel internal constructor(application: Application) : AndroidViewModel(application) {
@@ -33,10 +30,10 @@ class MainViewModel internal constructor(application: Application) : AndroidView
         viewModelScope.launch {
             val allNotes = mutableListOf<Note>()
 
-            allNotes.add(Note("A","abc", false));
-            allNotes.add(Note("B","aaa", false))
-            allNotes.add(Note("C","bbb", true))
-            allNotes.add(Note("D","ccc", false))
+            allNotes.add(Note("A", "abc", false));
+            allNotes.add(Note("B", "aaa", false))
+            allNotes.add(Note("C", "bbb", true))
+            allNotes.add(Note("D", "ccc", false))
 
             notesRepository.addNotes(allNotes)
         }
@@ -45,6 +42,21 @@ class MainViewModel internal constructor(application: Application) : AndroidView
     fun deleteAllNotes() {
         viewModelScope.launch {
             notesRepository.deleteAllNotes()
+        }
+    }
+
+    fun deleteNote(noteId: Long) {
+        viewModelScope.launch {
+            notesRepository.deleteNote(noteId)
+        }
+    }
+
+    fun toggleIsImportantNote(noteId: Long) {
+        // find note with provided id and toggle it's important value
+        notes.value?.first { note -> note.id == noteId }?.let {
+            viewModelScope.launch {
+                notesRepository.updateIsImportantForNote(it.id, !it.isImportant)
+            }
         }
     }
 
