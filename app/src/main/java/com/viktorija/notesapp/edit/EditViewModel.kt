@@ -30,14 +30,13 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     val editMode = noteId != 0L
 
     init {
-        if (editMode) {
+        _note = if (editMode) {
             // if edit mode then load from database
-            _note = notesRepository.getNoteById(noteId)
+            notesRepository.getNoteById(noteId)
         } else {
             // initialize with default note values
-            _note = MutableLiveData<Note>(Note("", "", false))
+            MutableLiveData<Note>(Note("", "", false))
         }
-
     }
 
     // Saving note object that is currently owned by view model
@@ -88,7 +87,8 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     /**
      * Factory for constructing ViewModel as we need to pass application
      */
-    class Factory(val application: Application, val noteId: Long) : ViewModelProvider.Factory {
+    class Factory(val application: Application, private val noteId: Long) :
+        ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(EditViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")

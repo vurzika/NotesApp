@@ -15,7 +15,7 @@ import com.viktorija.notesapp.databinding.NoteListItemBinding
 // Add SleepNight as the first argument to the ListAdapter, before SleepNightAdapter.ViewHolder.
 // Add SleepNightDiffCallback() as a parameter to the constructor.
 // The ListAdapter will use this to figure out what changed in the list.
-class NotesListAdapter(val clickListener: NoteClickListener) :
+class NotesListAdapter(private val clickListener: NoteClickListener) :
     ListAdapter<Note, NotesListAdapter.ViewHolder>(NoteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

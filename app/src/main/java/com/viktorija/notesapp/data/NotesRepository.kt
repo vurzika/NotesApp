@@ -11,7 +11,7 @@ class NotesRepository private constructor(private val database: AppDatabase) {
     fun getAllNotes() = database.noteDao.getAll()
 
     // get one note by id
-    fun getNoteById(noteId: Long) = database.noteDao.getNoteById(noteId);
+    fun getNoteById(noteId: Long) = database.noteDao.getNoteById(noteId)
 
     // using suspend as doing async write to database
     // method to add sample data (from menu)
@@ -51,7 +51,7 @@ class NotesRepository private constructor(private val database: AppDatabase) {
     }
 
     // get list of important notes
-    fun getImportantNotes() = database.noteDao.getImportantNotes();
+    fun getImportantNotes() = database.noteDao.getImportantNotes()
 
     // singleton for repository
     companion object {

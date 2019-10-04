@@ -50,10 +50,10 @@ class EditFragment : Fragment() {
             // if we get the data then set text
             it?.let {
                 binding.noteTitle.setText(it.title)
-                binding.noteTitle.setSelection(binding.noteTitle.getText().length);
+                binding.noteTitle.setSelection(binding.noteTitle.text.length)
 
                 binding.noteText.setText(it.text)
-                binding.noteText.setSelection(binding.noteText.getText().length);
+                binding.noteText.setSelection(binding.noteText.text.length)
 
                 // when item is loaded ask to update menu to set new icon for favorites button
                 // recreating menu options to refresh favorites icon

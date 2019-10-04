@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // Use NavigationUI to set up a Navigation View
         // By calling this method, the title in the Toolbar will automatically be updated
         // when the destination changes (assuming there is a valid label
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(binding.navView, navController)
 
         // Prevent the drawer from being swiped anywhere other than the top level destinations
         navController.addOnDestinationChangedListener { _: NavController, nd: NavDestination, _: Bundle? ->

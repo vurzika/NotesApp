@@ -8,7 +8,6 @@
         android:id="@+id/action_important"
         android:title="Important"
         android:icon="@drawable/ic_important_selected"
-        android:iconTint="@android:color/white"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_save"

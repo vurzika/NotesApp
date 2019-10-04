@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
         // inflating the layout
         binding = DataBindingUtil.inflate(
             inflater,
-            com.viktorija.notesapp.R.layout.main_fragment,
+            R.layout.main_fragment,
             container,
             false
         )
