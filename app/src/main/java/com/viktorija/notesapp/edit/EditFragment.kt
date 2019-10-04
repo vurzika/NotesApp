@@ -1,13 +1,10 @@
 package com.viktorija.notesapp.edit
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,7 +56,7 @@ class EditFragment : Fragment() {
                 binding.noteText.setSelection(binding.noteText.getText().length);
 
                 // when item is loaded ask to update menu to set new icon for favorites button
-                // todo?
+                // recreating menu options to refresh favorites icon
                 activity?.invalidateOptionsMenu()
             }
         })
@@ -86,17 +83,21 @@ class EditFragment : Fragment() {
     }
 
     // When we get the note from view model, update the "star" icon in the menu
-    // todo:  pochemu ne ispolzuem observer?
     override fun onPrepareOptionsMenu(menu: Menu) {
         // changing menu item based on note status
-        viewModel.note.value?.let {
-            val menuItem = menu.findItem(R.id.action_important)
-
+        val menuItem = menu.findItem(R.id.action_important)
+        val note = viewModel.note.value
+        if (note != null) {
             // update icon
-            menuItem.setIcon(when (it.isImportant) {
-                true -> R.drawable.ic_important_selected_toolbar
-                else -> R.drawable.ic_important_not_selected_toolbar
-            })
+            menuItem.setIcon(
+                when (note.isImportant) {
+                    true -> R.drawable.ic_important_selected_toolbar
+                    else -> R.drawable.ic_important_not_selected_toolbar
+                }
+            )
+            menuItem.isEnabled = true
+        } else {
+            menuItem.isEnabled = false
         }
 
         super.onPrepareOptionsMenu(menu)
@@ -117,7 +118,7 @@ class EditFragment : Fragment() {
             }
             R.id.action_important -> {
                 viewModel.toggleImportantFlagOnNote()
-
+                activity?.invalidateOptionsMenu()
             }
         }
         return super.onOptionsItemSelected(item)

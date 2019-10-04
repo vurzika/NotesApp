@@ -1,7 +1,6 @@
 package com.viktorija.notesapp
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
 
-        // Drawer Layout
+        // Binding variable
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
@@ -44,10 +43,12 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this,navController, appBarConfiguration)
 
         // Use NavigationUI to set up a Navigation View
+        // By calling this method, the title in the Toolbar will automatically be updated
+        // when the destination changes (assuming there is a valid label
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         // Prevent the drawer from being swiped anywhere other than the top level destinations
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, args: Bundle? ->
+        navController.addOnDestinationChangedListener { _: NavController, nd: NavDestination, _: Bundle? ->
             if (appBarConfiguration.topLevelDestinations.contains(nd.id)) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {

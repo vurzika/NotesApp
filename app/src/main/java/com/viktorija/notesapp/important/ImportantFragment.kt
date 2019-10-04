@@ -9,7 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.viktorija.notesapp.common.NoteClickListener
+import com.viktorija.notesapp.common.NotesListAdapter
 import com.viktorija.notesapp.databinding.ImportantFragmentBinding
 
 class ImportantFragment : Fragment() {
@@ -18,7 +21,7 @@ class ImportantFragment : Fragment() {
 
     // view model setup
     private val viewModel: ImportantViewModel by viewModels {
-        ImportantViewModel.Factory( requireNotNull(this.activity).application)
+        ImportantViewModel.Factory(requireNotNull(this.activity).application)
     }
 
     override fun onCreateView(
@@ -36,7 +39,11 @@ class ImportantFragment : Fragment() {
 
 
         // Telling RecyclerView about the Adapter
-        val adapter = ImportantNotesListAdapter()
+        val adapter = NotesListAdapter(NoteClickListener {
+            findNavController().navigate(
+                ImportantFragmentDirections.actionImportantFragmentToEditFragment(it)
+            )
+        })
 
         //Associate the adapter with the RecyclerView.
         binding.notesList.adapter = adapter
@@ -50,7 +57,7 @@ class ImportantFragment : Fragment() {
         viewModel.importantNotes.observe(this, Observer {
             // If data is available, letting adapter know that it has new list
             it?.let {
-                adapter.notes = it
+                adapter.submitList(it)
             }
         })
         // returning the view

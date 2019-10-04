@@ -1,62 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/edit_note"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/note_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_text"
-        app:srcCompat="@drawable/ic_edit" />
+    <data>
 
-    <TextView
-        android:id="@+id/note_title"
-        android:layout_width="0dp"
+        <variable
+            name="note"
+            type="com.viktorija.notesapp.data.database.Note" />
+        <!-- Create <variable> clickListener of type NoteClickListener
+            Inside the data block, add a new variable to make the
+            NoteClickListener class available through data binding.-->
+        <variable
+            name="clickListener"
+            type="com.viktorija.notesapp.common.NoteClickListener" />
+    </data>
+
+    <!-- Set ConstrainLayout's onClick property to clickListener. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/roboto_medium"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/note_text"
-        app:layout_constraintEnd_toStartOf="@+id/note_important"
-        app:layout_constraintStart_toEndOf="@+id/edit_note"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Note title" />
+        android:onClick="@{() -> clickListener.onClick(note)}"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/note_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/roboto_light"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/note_important"
-        app:layout_constraintStart_toEndOf="@+id/edit_note"
-        app:layout_constraintTop_toBottomOf="@+id/note_title"
-        tools:text="Note text" />
+        <ImageView
+            android:id="@+id/edit_note"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/note_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note_text"
+            app:srcCompat="@drawable/ic_edit" />
 
-    <ImageView
-        android:id="@+id/note_important"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/note_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_text"
-        android:src="@drawable/ic_important_not_selected" />
+        <TextView
+            android:id="@+id/note_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/note_text"
+            app:layout_constraintEnd_toStartOf="@+id/note_important_icon"
+            app:layout_constraintStart_toEndOf="@+id/edit_note"
+            app:layout_constraintTop_toTopOf="parent"
+            app:text="@{note.title}"
+            tools:text="Note title" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/note_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/note_important_icon"
+            app:layout_constraintStart_toEndOf="@+id/edit_note"
+            app:layout_constraintTop_toBottomOf="@+id/note_title"
+            app:text="@{note.text}"
+            tools:text="Note text" />
+
+        <ImageView
+            android:id="@+id/note_important_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:src="@{note.important ? @drawable/ic_important_selected : @drawable/ic_important_not_selected}"
+            app:layout_constraintBottom_toTopOf="@+id/note_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note_text"
+            tools:src="@drawable/ic_important_selected" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

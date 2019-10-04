@@ -42,7 +42,7 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
 
     // Saving note object that is currently owned by view model
     // (could be both new note or note that was previously loaded from database)
-    fun saveNote(newTitle: String, newText: String) : Boolean {
+    fun saveNote(newTitle: String, newText: String): Boolean {
         val title = newTitle.trim()
         val text = newText.trim()
 
@@ -64,7 +64,8 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
 
             return true
         } else {
-            _eventErrorMessage.value = "Error with saving the note. All the fields must be filled out"
+            _eventErrorMessage.value =
+                "Error with saving the note. All the fields must be filled out"
 
             return false
         }
@@ -79,19 +80,8 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
         val note = _note.value
 
         note?.let {
-
-            if (editMode) {
-                // todo: ??
-                // opposite value for note
-                it.isImportant = !it.isImportant
-
-                viewModelScope.launch {
-                    notesRepository.saveNote(it)
-                }
-                // todo: v kakom sluchae eto vipolnjaetsja?
-            } else {
-                _eventErrorMessage.value = "Note must be saved first"
-            }
+            // opposite value for note
+            it.isImportant = !it.isImportant
         }
     }
 
