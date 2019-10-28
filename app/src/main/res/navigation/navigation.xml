@@ -2,34 +2,34 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/main_fragment">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/main_fragment"
         android:name="com.viktorija.notesapp.main.MainFragment"
         android:label="My Notes">
         <action
             android:id="@+id/action_mainFragment_to_editFragment"
-            app:destination="@id/editFragment" />
+            app:destination="@id/edit_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/editFragment"
+        android:id="@+id/edit_fragment"
         android:name="com.viktorija.notesapp.edit.EditFragment"
         android:label="EditFragment">
         <action
             android:id="@+id/action_editFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/main_fragment" />
         <argument
             android:name="id"
             android:defaultValue="0L"
             app:argType="long" />
     </fragment>
     <fragment
-        android:id="@+id/importantFragment"
+        android:id="@+id/important_fragment"
         android:name="com.viktorija.notesapp.important.ImportantFragment"
         android:label="Important" >
         <action
             android:id="@+id/action_importantFragment_to_editFragment"
-            app:destination="@id/editFragment" />
+            app:destination="@id/edit_fragment" />
     </fragment>
 </navigation>

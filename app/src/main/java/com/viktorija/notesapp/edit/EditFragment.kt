@@ -3,6 +3,7 @@ package com.viktorija.notesapp.edit
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -61,6 +62,20 @@ class EditFragment : Fragment() {
             }
         })
 
+        val spinner = binding.categoriesSpinner
+
+        val arrayAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item)
+        spinner.adapter = arrayAdapter
+
+        // Set list of available categories
+        viewModel.categories.observe(this, Observer {
+            it?.let {
+                arrayAdapter.clear()
+                // Converting List of categories to List of Strings
+                arrayAdapter.addAll(it.map { item -> item.title })
+            }
+        })
+
         viewModel.eventErrorMessage.observe(this, Observer {
             it?.let {
                 Toast.makeText(
@@ -106,12 +121,10 @@ class EditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_save -> {
-                // todo: pochemu ne napisano: viewModel.saveNote(), zachem if?
                 val noteTitle: String = binding.noteTitle.text.toString()
                 val noteText: String = binding.noteText.text.toString()
 
-                // if saved then return back
-                // todo: pochemu ne peredajom kartinku, a tolko noteTitle i noteText
+                // if saved then return back else stay on screen
                 if (viewModel.saveNote(noteTitle, noteText)) {
                     view?.findNavController()?.popBackStack()
                 }

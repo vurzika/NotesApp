@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Notes App</string>
+
+    <!-- Menu -->
     <string name="menu_title_all_tasks">All Tasks</string>
     <string name="menu_title_important_tasks">Important</string>
+    <string name="menu_item_title_categories">Categories</string>
+    <string name="menu_item_title_add_category">Add New Category</string>
 </resources>

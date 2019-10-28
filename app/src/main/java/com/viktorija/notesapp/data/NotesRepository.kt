@@ -1,6 +1,7 @@
 package com.viktorija.notesapp.data
 
 import com.viktorija.notesapp.data.database.AppDatabase
+import com.viktorija.notesapp.data.database.Category
 import com.viktorija.notesapp.data.database.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,6 +53,31 @@ class NotesRepository private constructor(private val database: AppDatabase) {
 
     // get list of important notes
     fun getImportantNotes() = database.noteDao.getImportantNotes()
+
+
+    // Methods related to the Categories
+
+    fun getCategories() = database.categoryDao.getAll()
+
+    // method to get one list by id
+    fun getCategoryById(categoryId: Long) = database.categoryDao.getById(categoryId)
+
+    // method to save list to the database
+    suspend fun saveCategory(category: Category) {
+        withContext(Dispatchers.IO) {
+            database.categoryDao.save(category)
+        }
+    }
+
+    // method to delete list from the database
+    suspend fun deleteCategory(categoryId: Long) {
+        withContext(Dispatchers.IO) {
+            database.categoryDao.delete(categoryId)
+        }
+    }
+
+
+
 
     // singleton for repository
     companion object {

@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Note::class], version = 1, exportSchema = false)
+@Database(entities = [Note::class, Category::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract val noteDao: NoteDao
+    abstract val categoryDao: CategoryDao
 
     // The companion object allows clients to access the methods for creating or getting
     // the database without instantiating the class. Since the only purpose of this class

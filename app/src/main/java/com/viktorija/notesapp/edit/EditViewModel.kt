@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 class EditViewModel internal constructor(application: Application, noteId: Long) :
     AndroidViewModel(application) {
 
-
     // The data source this ViewModel will fetch results from.
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
@@ -18,6 +17,10 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     private var _note: LiveData<Note>
     val note: LiveData<Note>
         get() = _note
+
+    // List of categories available in the system
+    //TODO: return list of category names instead of category objects
+    val categories = notesRepository.getCategories()
 
     // Creating errorMessage as backing property
     // we use this to communicate to UI that currently there is error to display
@@ -74,7 +77,6 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
         _eventErrorMessage.value = null
     }
 
-    // todo: chto delaet etot metod? po strochkam? zachem if else?
     fun toggleImportantFlagOnNote() {
         val note = _note.value
 

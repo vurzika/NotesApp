@@ -65,7 +65,7 @@ class MainFragment : Fragment() {
                 .navigate(MainFragmentDirections.actionMainFragmentToEditFragment())
         }
 
-        // (7) Getting data into the adapter
+        // Getting data into the adapter
         // creating an observer on the notes variable
         viewModel.notes.observe(viewLifecycleOwner, Observer {
             it?.let {
