@@ -20,14 +20,15 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/roboto_light"
+                android:fontFamily="@font/roboto"
                 android:text="Category"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textColor="@android:color/black"/>
 
             <Spinner
                 android:id="@+id/categories_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -39,6 +40,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Enter note's title"
+            android:fontFamily="@font/roboto"
             android:inputType="text"
             android:textSize="16sp" />
 
@@ -50,6 +52,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="68dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto"
             android:hint="Enter new note"
             android:inputType="textMultiLine|textCapSentences" />
 

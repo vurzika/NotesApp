@@ -64,7 +64,7 @@ class EditFragment : Fragment() {
 
         val spinner = binding.categoriesSpinner
 
-        val arrayAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item)
+        val arrayAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_row)
         spinner.adapter = arrayAdapter
 
         // Set list of available categories
