@@ -18,9 +18,13 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     val note: LiveData<Note>
         get() = _note
 
-    // List of categories available in the system
-    //TODO: return list of category names instead of category objects
+    // List of categories available category names in system
     val categories = notesRepository.getCategories()
+
+    // todo: return category list and name from viewmodel
+//    val categories = Transformations.map(_categories) { category ->
+//        category.map { it.title }
+//    }
 
     // Creating errorMessage as backing property
     // we use this to communicate to UI that currently there is error to display
@@ -44,9 +48,15 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
 
     // Saving note object that is currently owned by view model
     // (could be both new note or note that was previously loaded from database)
-    fun saveNote(newTitle: String, newText: String): Boolean {
+    fun saveNote(newTitle: String, newText: String, categoryTitle: String?): Boolean {
         val title = newTitle.trim()
         val text = newText.trim()
+        // category id with provided name
+        val categoryId = categoryTitle?.let {
+            categories.value?.first { category ->
+                category.title == categoryTitle
+            }?.id
+        }
 
         // validate that they are not empty
         // if they are empty - update error message and return false for saveNote method
@@ -58,6 +68,7 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
             newNote?.let {
                 it.title = title.trim()
                 it.text = text.trim()
+                it.categoryId = categoryId
 
                 viewModelScope.launch {
                     notesRepository.saveNote(it)

@@ -29,6 +29,9 @@ class EditFragment : Fragment() {
         EditViewModel.Factory(requireNotNull(this.activity).application, editFragmentArgs.id)
     }
 
+    // adapter for displaying categories in spinner
+    private lateinit var categoryListAdapter: ArrayAdapter<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +59,9 @@ class EditFragment : Fragment() {
                 binding.noteText.setText(it.text)
                 binding.noteText.setSelection(binding.noteText.text.length)
 
+                // update selected category to match note selection
+                updateSelectedCategoryName()
+
                 // when item is loaded ask to update menu to set new icon for favorites button
                 // recreating menu options to refresh favorites icon
                 activity?.invalidateOptionsMenu()
@@ -64,15 +70,24 @@ class EditFragment : Fragment() {
 
         val spinner = binding.categoriesSpinner
 
-        val arrayAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_row)
-        spinner.adapter = arrayAdapter
+        categoryListAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_row)
+        spinner.adapter = categoryListAdapter
 
         // Set list of available categories
         viewModel.categories.observe(this, Observer {
             it?.let {
-                arrayAdapter.clear()
+                categoryListAdapter.clear()
+
                 // Converting List of categories to List of Strings
-                arrayAdapter.addAll(it.map { item -> item.title })
+                val allCategoryTitles = it.map { item -> item.title }.toMutableList()
+                // adding first item to the list for case where note doesn't have categories
+                allCategoryTitles.add(0, "No Category")
+
+                // add all other categories
+                categoryListAdapter.addAll(allCategoryTitles)
+
+                // update selected category to match note selection
+                updateSelectedCategoryName()
             }
         })
 
@@ -90,6 +105,25 @@ class EditFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    private fun updateSelectedCategoryName() {
+        // if we have note already, select
+        with(viewModel) {
+            note.value?.let { note ->
+                categories.value?.let { categories ->
+                    val selectedCategory =
+                        categories.firstOrNull { category -> category.id == note.categoryId }
+
+                    binding.categoriesSpinner.setSelection(
+                        when (selectedCategory) {
+                            null -> 0
+                            else -> categoryListAdapter.getPosition(selectedCategory.title)
+                        }
+                    )
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -124,8 +158,13 @@ class EditFragment : Fragment() {
                 val noteTitle: String = binding.noteTitle.text.toString()
                 val noteText: String = binding.noteText.text.toString()
 
+                val noteCategoryTitle = when (binding.categoriesSpinner.selectedItemPosition) {
+                    0 -> null
+                    else -> binding.categoriesSpinner.selectedItem.toString()
+                }
+
                 // if saved then return back else stay on screen
-                if (viewModel.saveNote(noteTitle, noteText)) {
+                if (viewModel.saveNote(noteTitle, noteText, noteCategoryTitle)) {
                     view?.findNavController()?.popBackStack()
                 }
             }

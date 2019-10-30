@@ -25,10 +25,10 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/black"/>
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/categories_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

@@ -66,15 +66,15 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     // Room and Lifecycle dependencies
-    implementation "androidx.room:room-runtime:2.2.0"
-    kapt "androidx.room:room-compiler:2.2.0"
+    implementation "androidx.room:room-runtime:2.2.1"
+    kapt "androidx.room:room-compiler:2.2.1"
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
 
     // ViewModel - enable liveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc01"
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.2.0"
+    implementation "androidx.room:room-ktx:2.2.1"
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.11'
