@@ -1,4 +1,4 @@
-package com.viktorija.notesapp.categories
+package com.viktorija.notesapp
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +10,7 @@ import com.viktorija.notesapp.data.database.AppDatabase
 import com.viktorija.notesapp.data.database.Category
 import kotlinx.coroutines.launch
 
-class CategoryViewModel internal constructor(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel internal constructor(application: Application) : AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
@@ -33,9 +33,9 @@ class CategoryViewModel internal constructor(application: Application) : Android
      */
     class Factory(val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return CategoryViewModel(application) as T
+                return MainActivityViewModel(application) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

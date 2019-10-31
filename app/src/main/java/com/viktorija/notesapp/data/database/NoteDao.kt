@@ -22,6 +22,10 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = :noteId")
     fun getNoteById(noteId : Long) : LiveData<Note>
 
+    // method to get note by category
+    @Query("SELECT * FROM notes WHERE category_id = :categoryId")
+    fun getNotesByCategory(categoryId : Long) : LiveData<List<Note>>
+
     // method to get all notes from the database to display them on the screen
     @Query("SELECT * FROM notes ORDER BY id DESC")
     fun getAll(): LiveData<List<Note>>

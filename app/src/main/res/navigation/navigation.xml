@@ -16,9 +16,6 @@
         android:id="@+id/edit_fragment"
         android:name="com.viktorija.notesapp.edit.EditFragment"
         android:label="EditFragment">
-        <action
-            android:id="@+id/action_editFragment_to_mainFragment"
-            app:destination="@id/main_fragment" />
         <argument
             android:name="id"
             android:defaultValue="0L"
@@ -32,4 +29,23 @@
             android:id="@+id/action_importantFragment_to_editFragment"
             app:destination="@id/edit_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/category_fragment"
+        android:name="com.viktorija.notesapp.categories.CategoryFragment"
+        android:label="Category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_editFragment"
+            app:destination="@id/edit_fragment" />
+        <argument
+            android:name="categoryId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
+    <action
+        android:id="@+id/openNotesInCategory"
+        app:destination="@id/category_fragment"
+        app:popUpTo="@id/category_fragment"
+        app:popUpToInclusive="true"
+        app:launchSingleTop="true" />
 </navigation>

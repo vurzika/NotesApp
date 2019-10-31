@@ -17,7 +17,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.viktorija.notesapp.categories.CategoryViewModel
 import com.viktorija.notesapp.data.database.Category
 import com.viktorija.notesapp.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     // navigation contoller
     private lateinit var navController: NavController
 
-    private val viewModel: CategoryViewModel by viewModels {
-        CategoryViewModel.Factory(requireNotNull(this).application)
+    private val viewModel: MainActivityViewModel by viewModels {
+        MainActivityViewModel.Factory(requireNotNull(this).application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // Setup appBarConfiguration to let application know
         // which menu fragments are top level fragments and connect that with drawer
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.main_fragment, R.id.important_fragment),
+            setOf(R.id.main_fragment, R.id.important_fragment, R.id.category_fragment),
             binding.drawerLayout
         )
 
@@ -86,11 +85,19 @@ class MainActivity : AppCompatActivity() {
 
 
                 // for each category create menu item in drawer
-                it.forEach {
+                it.forEach {category ->
                     val categoryMenuItem =
-                        categoryMenu.add(0, it.id.toInt(), Menu.NONE, it.title.capitalize());
+                        categoryMenu.add(0, category.id.toInt(), Menu.NONE, category.title.capitalize());
                     categoryMenuItem.setIcon(R.drawable.ic_radio_button)
+                    categoryMenuItem.setOnMenuItemClickListener {
+                        //navController.navigateUp(CategoryFragmentDirections.actionCa)
 
+                        //navController.navigate(CategoryFragmentDirections.actionCategoryFragmentSelf(category.id))
+                        navController.navigate(NavigationDirections.openNotesInCategory(category.id))
+                        drawerLayout.closeDrawers()
+
+                        true
+                    }
                 }
 
                 // add "new category" item
@@ -101,36 +108,13 @@ class MainActivity : AppCompatActivity() {
                     R.string.menu_item_title_add_category
                 )
                 newCategoryMenuItem.setIcon(R.drawable.ic_add)
-            }
-        })
-
-        // add custom navigation item selected listener to be able to handle
-        // custom clicks and navigation UI at the same time
-        binding.navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.new_category -> {
-                    //do something
+                newCategoryMenuItem.setOnMenuItemClickListener {
                     showAddNewCategoryDialog()
 
-                    // notify that we handled tap
                     true
                 }
-                else -> {
-                    // if we don't handle this menu item selection deligate click to navigation UI
-
-                    // check if navigation UI handled the tap on menu item
-                    val itemSelectedInd = NavigationUI.onNavDestinationSelected(it, navController)
-
-                    // if handled, close drawer
-                    if (itemSelectedInd) {
-                        drawerLayout.closeDrawer(binding.navView)
-                    }
-
-                    // notify if we handled
-                    itemSelectedInd
-                }
             }
-        }
+        })
     }
 
 
@@ -147,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             .setView(categoryEditText)
             .setPositiveButton(
                 "Add"
-            ) { dialog, which ->
+            ) { _, _ ->
                 val categoryName = categoryEditText.text.toString().trim()
 
                 viewModel.saveCategory(Category(categoryName))

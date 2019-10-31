@@ -1,4 +1,4 @@
-package com.viktorija.notesapp.important
+package com.viktorija.notesapp.categories
 
 import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
@@ -10,20 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.viktorija.notesapp.common.NoteClickListener
 import com.viktorija.notesapp.common.NotesListAdapter
-import com.viktorija.notesapp.databinding.ImportantFragmentBinding
+import com.viktorija.notesapp.databinding.CategoryFragmentBinding
 
-class ImportantFragment : Fragment() {
+class CategoryFragment : Fragment() {
 
-    private lateinit var binding: ImportantFragmentBinding
+    private lateinit var binding: CategoryFragmentBinding
+
+    private val categoryFragmentArgs by navArgs<CategoryFragmentArgs>()
 
     // view model setup
-    private val viewModel: ImportantViewModel by viewModels {
-        ImportantViewModel.Factory(requireNotNull(this.activity).application)
+    private val viewModel: NotesInCategoryViewModel by viewModels {
+        NotesInCategoryViewModel.Factory(requireNotNull(this.activity).application, categoryFragmentArgs.categoryId)
     }
 
     override fun onCreateView(
@@ -34,21 +37,23 @@ class ImportantFragment : Fragment() {
         // inflating the layout
         binding = DataBindingUtil.inflate(
             inflater,
-            com.viktorija.notesapp.R.layout.important_fragment,
+            com.viktorija.notesapp.R.layout.category_fragment,
             container,
             false
         )
 
+//        // Telling RecyclerView about the Adapter
+        val adapter = NotesListAdapter(
+            NoteClickListener(
+                clickListener = {
+                    findNavController().navigate(
+                        CategoryFragmentDirections.actionCategoryFragmentToEditFragment(it)
 
-        // Telling RecyclerView about the Adapter
-        val adapter = NotesListAdapter(NoteClickListener(
-            clickListener = {
-            findNavController().navigate(
-                ImportantFragmentDirections.actionImportantFragmentToEditFragment(it)
-            )
-            }, clickStarListener = {
-                viewModel.toggleIsImportantNote(it)
-            })
+                    )
+                }, clickStarListener = {
+                    // todo:
+                    //viewModel.toggleIsImportantNote(it)
+                })
         )
 
         //Associate the adapter with the RecyclerView.
@@ -59,8 +64,8 @@ class ImportantFragment : Fragment() {
         binding.notesList.addItemDecoration(divider)
 
         // Getting data into the adapter
-        // creating an observer on the notes variable
-        viewModel.importantNotes.observe(this, Observer {
+        // creating an observer on the category variable
+        viewModel.notes.observe(this, Observer {
             // If data is available, letting adapter know that it has new list
             it?.let {
                 adapter.submitList(it)

@@ -14,6 +14,9 @@ class NotesRepository private constructor(private val database: AppDatabase) {
     // get one note by id
     fun getNoteById(noteId: Long) = database.noteDao.getNoteById(noteId)
 
+
+    fun getNotesByCategory(categoryId: Long) = database.noteDao.getNotesByCategory(categoryId)
+
     // using suspend as doing async write to database
     // method to add sample data (from menu)
     // allows to save to the database multiple notes at the same time
@@ -44,6 +47,7 @@ class NotesRepository private constructor(private val database: AppDatabase) {
         }
     }
 
+    //todo: update comment
     // method to save note to the database
     suspend fun updateIsImportantForNote(noteId: Long, isImportant: Boolean) {
         withContext(Dispatchers.IO) {
