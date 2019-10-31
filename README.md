@@ -2,7 +2,7 @@
 
 Example application that allows capturing, editing and organizing notes.
 
-This application showcasing use of following technologies / approaches
+This application is showcasing the use of following technologies / approaches
 * Modern Multi-Layer Architecture: View / ViewModel / Repository / DB
 * Fragments
 * Constaint Layout
