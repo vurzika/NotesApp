@@ -14,7 +14,7 @@
             NoteClickListener class available through data binding.-->
         <variable
             name="clickListener"
-            type="com.viktorija.notesapp.common.NoteClickListener" />
+            type="com.viktorija.notesapp.notes.NoteClickListener" />
     </data>
 
     <!-- Set ConstrainLayout's onClick property to clickListener. -->

@@ -51,23 +51,24 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     fun saveNote(newTitle: String, newText: String, categoryTitle: String?): Boolean {
         val title = newTitle.trim()
         val text = newText.trim()
-        // category id with provided name
-        val categoryId = categoryTitle?.let {
-            categories.value?.first { category ->
-                category.title == categoryTitle
-            }?.id
-        }
 
         // validate that they are not empty
         // if they are empty - update error message and return false for saveNote method
         // if they are not empty - save and return true for saveNote method
 
         if (title.isNotEmpty() && text.isNotEmpty()) {
+            // category id with provided name
+            val categoryId = categoryTitle?.let {
+                categories.value?.first { category ->
+                    category.title == categoryTitle
+                }?.id
+            }
+
             val newNote = _note.value
 
             newNote?.let {
-                it.title = title.trim()
-                it.text = text.trim()
+                it.title = title
+                it.text = text
                 it.categoryId = categoryId
 
                 viewModelScope.launch {

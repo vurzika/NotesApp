@@ -2,6 +2,7 @@ package com.viktorija.notesapp
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
 
         // Binding variable
         val binding =
@@ -48,11 +48,11 @@ class MainActivity : AppCompatActivity() {
         // Setup appBarConfiguration to let application know
         // which menu fragments are top level fragments and connect that with drawer
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.main_fragment, R.id.important_fragment, R.id.category_fragment),
+            setOf(R.id.notes_list_fragment),
             binding.drawerLayout
         )
 
-        // This allows NavigationUI to decide what label to show in the action bar
+        // Allows NavigationUI to decide what label to show in the action bar
         // By using appBarConfig, it will also determine whether to
         // show the up arrow or drawer menu icon
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
@@ -71,55 +71,46 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        initDrawerCategoriesList(binding)
+        navView.menu.findItem(R.id.important_fragment).setOnMenuItemClickListener {
+            navController.navigate(NavigationDirections.openImportantNotes())
+            drawerLayout.closeDrawers()
+
+            true
+        }
+
+        initDrawerCategoriesList()
     }
 
     // Initializing dynamic drawer categories
-    private fun initDrawerCategoriesList(binding: ActivityMainBinding) {
+    private fun initDrawerCategoriesList() {
         // observe list of categories in the database and refresh drawer
         viewModel.categories.observe(this, Observer {
             it?.let {
                 // recreating the context of the drawer menu
+                val groupId = navView.menu.findItem(R.id.notes_list_fragment).groupId
+
                 val categoryMenu = navView.menu.findItem(R.id.categories_menu).subMenu
                 categoryMenu.clear()
-
 
                 // for each category create menu item in drawer
                 it.forEach {category ->
                     val categoryMenuItem =
-                        categoryMenu.add(0, category.id.toInt(), Menu.NONE, category.title.capitalize());
+                        categoryMenu.add(groupId, category.id.toInt(), Menu.NONE, category.title.capitalize());
                     categoryMenuItem.setIcon(R.drawable.ic_radio_button)
                     categoryMenuItem.setOnMenuItemClickListener {
-                        //navController.navigateUp(CategoryFragmentDirections.actionCa)
-
-                        //navController.navigate(CategoryFragmentDirections.actionCategoryFragmentSelf(category.id))
-                        navController.navigate(NavigationDirections.openNotesInCategory(category.id))
+                        // Open selected category
+                        navController.navigate(NavigationDirections.openCategoryNotes(categoryId = category.id))
                         drawerLayout.closeDrawers()
 
                         true
                     }
                 }
-
-                // add "new category" item
-                val newCategoryMenuItem = categoryMenu.add(
-                    0,
-                    R.id.new_category,
-                    Menu.NONE,
-                    R.string.menu_item_title_add_category
-                )
-                newCategoryMenuItem.setIcon(R.drawable.ic_add)
-                newCategoryMenuItem.setOnMenuItemClickListener {
-                    showAddNewCategoryDialog()
-
-                    true
-                }
             }
         })
     }
 
-
     // Dialog to add new category
-    private fun showAddNewCategoryDialog() {
+    fun showAddNewCategoryDialog(menuItem: MenuItem) {
         val categoryEditText = EditText(this)
         categoryEditText.layoutParams = ViewGroup.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,

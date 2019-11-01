@@ -2,16 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/main_fragment">
+    app:startDestination="@id/notes_list_fragment">
 
-    <fragment
-        android:id="@+id/main_fragment"
-        android:name="com.viktorija.notesapp.main.MainFragment"
-        android:label="My Notes">
-        <action
-            android:id="@+id/action_mainFragment_to_editFragment"
-            app:destination="@id/edit_fragment" />
-    </fragment>
     <fragment
         android:id="@+id/edit_fragment"
         android:name="com.viktorija.notesapp.edit.EditFragment"
@@ -21,31 +13,35 @@
             android:defaultValue="0L"
             app:argType="long" />
     </fragment>
-    <fragment
-        android:id="@+id/important_fragment"
-        android:name="com.viktorija.notesapp.important.ImportantFragment"
-        android:label="Important" >
-        <action
-            android:id="@+id/action_importantFragment_to_editFragment"
-            app:destination="@id/edit_fragment" />
-    </fragment>
 
     <fragment
-        android:id="@+id/category_fragment"
-        android:name="com.viktorija.notesapp.categories.CategoryFragment"
-        android:label="Category" >
+        android:id="@+id/notes_list_fragment"
+        android:name="com.viktorija.notesapp.notes.NotesListFragment"
+        android:label="My Notes">
         <action
-            android:id="@+id/action_categoryFragment_to_editFragment"
+            android:id="@+id/action_notesListFragment_to_edit_fragment"
             app:destination="@id/edit_fragment" />
         <argument
             android:name="categoryId"
             android:defaultValue="0L"
             app:argType="long" />
+        <argument
+            android:name="onlyImportantInd"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <action
-        android:id="@+id/openNotesInCategory"
-        app:destination="@id/category_fragment"
-        app:popUpTo="@id/category_fragment"
-        app:popUpToInclusive="true"
-        app:launchSingleTop="true" />
+        android:id="@+id/openImportantNotes"
+        app:destination="@id/notes_list_fragment"
+        app:launchSingleTop="true" >
+        <argument android:defaultValue="true"
+            android:name="onlyImportantInd" />
+    </action>
+    <action
+        android:id="@+id/openCategoryNotes"
+        app:destination="@id/notes_list_fragment"
+        app:launchSingleTop="true" >
+        <argument android:defaultValue="false"
+            android:name="onlyImportantInd" />
+    </action>
 </navigation>

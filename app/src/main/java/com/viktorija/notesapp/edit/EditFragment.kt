@@ -60,7 +60,7 @@ class EditFragment : Fragment() {
                 binding.noteText.setSelection(binding.noteText.text.length)
 
                 // update selected category to match note selection
-                updateSelectedCategoryName()
+                displaySelectedCategoryInDropdown()
 
                 // when item is loaded ask to update menu to set new icon for favorites button
                 // recreating menu options to refresh favorites icon
@@ -70,7 +70,7 @@ class EditFragment : Fragment() {
 
         val spinner = binding.categoriesSpinner
 
-        categoryListAdapter = ArrayAdapter<String>(context!!, R.layout.spinner_row)
+        categoryListAdapter = ArrayAdapter(context!!, R.layout.spinner_row)
         spinner.adapter = categoryListAdapter
 
         // Set list of available categories
@@ -86,8 +86,7 @@ class EditFragment : Fragment() {
                 // add all other categories
                 categoryListAdapter.addAll(allCategoryTitles)
 
-                // update selected category to match note selection
-                updateSelectedCategoryName()
+                displaySelectedCategoryInDropdown()
             }
         })
 
@@ -107,21 +106,19 @@ class EditFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateSelectedCategoryName() {
+    private fun displaySelectedCategoryInDropdown() {
         // if we have note already, select
-        with(viewModel) {
-            note.value?.let { note ->
-                categories.value?.let { categories ->
-                    val selectedCategory =
-                        categories.firstOrNull { category -> category.id == note.categoryId }
+        viewModel.note.value?.let { note ->
+            viewModel.categories.value?.let { categories ->
+                val selectedCategory =
+                    categories.firstOrNull { category -> category.id == note.categoryId }
 
-                    binding.categoriesSpinner.setSelection(
-                        when (selectedCategory) {
-                            null -> 0
-                            else -> categoryListAdapter.getPosition(selectedCategory.title)
-                        }
-                    )
-                }
+                binding.categoriesSpinner.setSelection(
+                    when (selectedCategory) {
+                        null -> 0
+                        else -> categoryListAdapter.getPosition(selectedCategory.title)
+                    }
+                )
             }
         }
     }

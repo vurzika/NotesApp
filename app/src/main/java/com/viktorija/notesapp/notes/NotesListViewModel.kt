@@ -1,4 +1,4 @@
-package com.viktorija.notesapp.main
+package com.viktorija.notesapp.notes
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +10,7 @@ import com.viktorija.notesapp.data.database.AppDatabase
 import com.viktorija.notesapp.data.database.Note
 import kotlinx.coroutines.launch
 
-class MainViewModel internal constructor(application: Application) : AndroidViewModel(application) {
+class NotesListViewModel internal constructor(application: Application, categoryId: Long, onlyImportantInd: Boolean) : AndroidViewModel(application) {
 
     /**
      * The data source this ViewModel will fetch results from.
@@ -20,7 +20,11 @@ class MainViewModel internal constructor(application: Application) : AndroidView
     /**
      * Property to allow observing list of notes available in system
      */
-    val notes = notesRepository.getAllNotes()
+    val notes = when {
+        categoryId != 0L -> notesRepository.getNotesByCategory(categoryId)
+        onlyImportantInd -> notesRepository.getImportantNotes()
+        else -> notesRepository.getAllNotes()
+    }
 
     /**
      * Method to allow add list with sample data to the database
@@ -63,11 +67,11 @@ class MainViewModel internal constructor(application: Application) : AndroidView
     /**
      * Factory for constructing ViewModel as we need to pass application
      */
-    class Factory(val application: Application) : ViewModelProvider.Factory {
+    class Factory(val application: Application, private val categoryId: Long, private val onlyImportantInd: Boolean) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(NotesListViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return MainViewModel(application) as T
+                return NotesListViewModel(application, categoryId, onlyImportantInd) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

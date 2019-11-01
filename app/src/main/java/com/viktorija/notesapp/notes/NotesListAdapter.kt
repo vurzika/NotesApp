@@ -1,4 +1,4 @@
-package com.viktorija.notesapp.common
+package com.viktorija.notesapp.notes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.viktorija.notesapp.data.database.Note
-import com.viktorija.notesapp.databinding.NoteListItemBinding
+import com.viktorija.notesapp.databinding.NotesListItemBinding
 
 // Modify the constructor of the NotesListAdapter class to receive a
 // val clickListener: NoteClickListener - to handle clicks on the note items
@@ -28,7 +28,7 @@ class NotesListAdapter(private val clickListener: NoteClickListener) :
     }
 
     // Create ViewHolder class that extends RecyclerView.ViewHolder.
-    class ViewHolder(val binding: NoteListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: NotesListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         var noteId: Long = 0
             private set
@@ -44,7 +44,7 @@ class NotesListAdapter(private val clickListener: NoteClickListener) :
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = NoteListItemBinding.inflate(layoutInflater, parent, false)
+                val binding = NotesListItemBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }

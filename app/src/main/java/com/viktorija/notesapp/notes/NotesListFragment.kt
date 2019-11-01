@@ -1,29 +1,32 @@
-package com.viktorija.notesapp.important
+package com.viktorija.notesapp.notes
 
-import android.graphics.drawable.ClipDrawable
+
+import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.viktorija.notesapp.common.NoteClickListener
-import com.viktorija.notesapp.common.NotesListAdapter
-import com.viktorija.notesapp.databinding.ImportantFragmentBinding
+import com.viktorija.notesapp.R
+import com.viktorija.notesapp.databinding.NotesListFragmentBinding
 
-class ImportantFragment : Fragment() {
+class NotesListFragment : Fragment() {
 
-    private lateinit var binding: ImportantFragmentBinding
+    // binding variable
+    private lateinit var binding: NotesListFragmentBinding
+
+    private val notesListFragmentArgs by navArgs<NotesListFragmentArgs>()
 
     // view model setup
-    private val viewModel: ImportantViewModel by viewModels {
-        ImportantViewModel.Factory(requireNotNull(this.activity).application)
+    private val viewModel: NotesListViewModel by viewModels {
+        NotesListViewModel.Factory(requireNotNull(this.activity).application, notesListFragmentArgs.categoryId, notesListFragmentArgs.onlyImportantInd)
     }
 
     override fun onCreateView(
@@ -34,38 +37,48 @@ class ImportantFragment : Fragment() {
         // inflating the layout
         binding = DataBindingUtil.inflate(
             inflater,
-            com.viktorija.notesapp.R.layout.important_fragment,
+            R.layout.notes_list_fragment,
             container,
             false
         )
 
-
         // Telling RecyclerView about the Adapter
-        val adapter = NotesListAdapter(NoteClickListener(
-            clickListener = {
-            findNavController().navigate(
-                ImportantFragmentDirections.actionImportantFragmentToEditFragment(it)
-            )
-            }, clickStarListener = {
-                viewModel.toggleIsImportantNote(it)
-            })
+        val adapter = NotesListAdapter(
+            NoteClickListener(
+                clickListener = {
+                    findNavController().navigate(
+                        NotesListFragmentDirections.actionNotesListFragmentToEditFragment(it)
+                    )
+                },
+                clickStarListener = {
+                    viewModel.toggleIsImportantNote(it)
+                })
         )
 
         //Associate the adapter with the RecyclerView.
         binding.notesList.adapter = adapter
 
         // adding divider
-        val divider = DividerItemDecoration(context, ClipDrawable.HORIZONTAL)
+        val divider = DividerItemDecoration(context, HORIZONTAL)
         binding.notesList.addItemDecoration(divider)
+
+
+        // Navigating to Edit fragment
+        binding.fab.setOnClickListener { view: View ->
+            view.findNavController()
+                .navigate(NotesListFragmentDirections.actionNotesListFragmentToEditFragment())
+        }
 
         // Getting data into the adapter
         // creating an observer on the notes variable
-        viewModel.importantNotes.observe(this, Observer {
-            // If data is available, letting adapter know that it has new list
+        viewModel.notes.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
+
+        // Indicate that we have menu to setup
+        setHasOptionsMenu(true)
 
         initSwipeToDelete()
 
@@ -95,5 +108,25 @@ class ImportantFragment : Fragment() {
                 }
             }
         }).attachToRecyclerView(binding.notesList)
+    }
+
+    // Menu related methods
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_add_sample_data -> {
+                viewModel.addSampleNotes()
+                return true
+            }
+            R.id.action_delete_all -> {
+                viewModel.deleteAllNotes()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
