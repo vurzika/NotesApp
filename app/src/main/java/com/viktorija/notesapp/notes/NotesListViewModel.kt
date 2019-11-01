@@ -1,10 +1,7 @@
 package com.viktorija.notesapp.notes
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.viktorija.notesapp.data.NotesRepository
 import com.viktorija.notesapp.data.database.AppDatabase
 import com.viktorija.notesapp.data.database.Note
@@ -16,6 +13,16 @@ class NotesListViewModel internal constructor(application: Application, category
      * The data source this ViewModel will fetch results from.
      */
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
+
+
+
+    val listTitle : LiveData<String> = when {
+        // Using Transformations.map to get title of the category by category id
+        // LiveData<String> <- LiveData<Category>
+        categoryId != 0L -> Transformations.map(notesRepository.getCategoryById(categoryId)) { category -> category.title }
+        onlyImportantInd -> MutableLiveData("Important Notes")
+        else -> MutableLiveData("My Notes")
+    }
 
     /**
      * Property to allow observing list of notes available in system

@@ -21,11 +21,6 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     // List of categories available category names in system
     val categories = notesRepository.getCategories()
 
-    // todo: return category list and name from viewmodel
-//    val categories = Transformations.map(_categories) { category ->
-//        category.map { it.title }
-//    }
-
     // Creating errorMessage as backing property
     // we use this to communicate to UI that currently there is error to display
     // UI must observe this property and show toast every time when there was an error

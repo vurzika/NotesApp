@@ -47,8 +47,7 @@ class NotesRepository private constructor(private val database: AppDatabase) {
         }
     }
 
-    //todo: update comment
-    // method to save note to the database
+    // method to update isImportant flag
     suspend fun updateIsImportantForNote(noteId: Long, isImportant: Boolean) {
         withContext(Dispatchers.IO) {
             database.noteDao.updateIsImportantForNote(noteId, isImportant)

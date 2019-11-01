@@ -4,6 +4,7 @@ package com.viktorija.notesapp.notes
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +27,11 @@ class NotesListFragment : Fragment() {
 
     // view model setup
     private val viewModel: NotesListViewModel by viewModels {
-        NotesListViewModel.Factory(requireNotNull(this.activity).application, notesListFragmentArgs.categoryId, notesListFragmentArgs.onlyImportantInd)
+        NotesListViewModel.Factory(
+            requireNotNull(this.activity).application,
+            notesListFragmentArgs.categoryId,
+            notesListFragmentArgs.onlyImportantInd
+        )
     }
 
     override fun onCreateView(
@@ -74,6 +79,13 @@ class NotesListFragment : Fragment() {
         viewModel.notes.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+            }
+        })
+
+        // changing the title of the toolbar based on selected category
+        viewModel.listTitle.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                (activity as? AppCompatActivity)?.supportActionBar?.title = it
             }
         })
 
