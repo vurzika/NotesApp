@@ -9,5 +9,5 @@ This application is showcasing the use of following technologies / approaches
 * Navigation UI, including Drawer based navigation
 * Two-Way Data-Binding
 * LiveData
-* Room
+* Room (Entities, DatabaseViews, Relationships, Customer Queries)
 * Coroutines
