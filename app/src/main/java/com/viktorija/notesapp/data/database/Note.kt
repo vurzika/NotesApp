@@ -1,6 +1,7 @@
 package com.viktorija.notesapp.data.database
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 
 // data class for Entity
 
@@ -9,7 +10,8 @@ import androidx.room.*
     foreignKeys = [ForeignKey(
         entity = Category::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("category_id")
+        childColumns = arrayOf("category_id"),
+        onDelete = CASCADE
     )]
 )
 data class Note(

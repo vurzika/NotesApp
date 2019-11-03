@@ -44,4 +44,7 @@
         <argument android:defaultValue="false"
             android:name="onlyImportantInd" />
     </action>
+    <action
+        android:id="@+id/openAllTasks"
+        app:destination="@id/notes_list_fragment" />
 </navigation>

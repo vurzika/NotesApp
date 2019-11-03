@@ -10,19 +10,14 @@ import com.viktorija.notesapp.data.database.AppDatabase
 import com.viktorija.notesapp.data.database.Category
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel internal constructor(application: Application) : AndroidViewModel(application) {
+class MainActivityViewModel internal constructor(application: Application) :
+    AndroidViewModel(application) {
 
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
-    val categories = notesRepository.getCategories()
+    val categories = notesRepository.getCategorySummaries()
 
-    fun deleteCategory(categoryId: Long) {
-        viewModelScope.launch {
-            notesRepository.deleteCategory(categoryId)
-        }
-    }
-
-    fun saveCategory(category: Category){
+    fun saveCategory(category: Category) {
         viewModelScope.launch {
             notesRepository.saveCategory(category)
         }

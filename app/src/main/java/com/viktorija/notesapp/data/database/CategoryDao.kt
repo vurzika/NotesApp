@@ -9,15 +9,15 @@ import androidx.room.Query
 @Dao
 interface CategoryDao {
 
-    // method to add list
+    // method to add category
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(list: Category) : Long
 
-    // method to get all lists from the database to display them on the screen
+    // method to get all categories from the database to display them on the screen
     @Query("SELECT * FROM categories ORDER BY id DESC")
     fun getAll(): LiveData<List<Category>>
 
-    // method to get one list by id
+    // method to get one category by id
     @Query("SELECT * FROM categories WHERE id = :categoryId")
     fun getById(categoryId : Long) : LiveData<Category>
 

@@ -35,7 +35,7 @@ class NotesRepository private constructor(private val database: AppDatabase) {
 
     // method to save note to the database
     suspend fun saveNote(newNote: Note) {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             database.noteDao.saveNote(newNote)
         }
     }
@@ -79,7 +79,12 @@ class NotesRepository private constructor(private val database: AppDatabase) {
         }
     }
 
+    // category summary methods
 
+    fun getCategorySummaries() = database.categorySummaryDao.getAll()
+
+    // get category summary information by category id
+    fun getCategorySummaryById(categoryId: Long) = database.categorySummaryDao.getById(categoryId)
 
 
     // singleton for repository

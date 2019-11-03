@@ -7,7 +7,11 @@ import com.viktorija.notesapp.data.database.AppDatabase
 import com.viktorija.notesapp.data.database.Note
 import kotlinx.coroutines.launch
 
-class NotesListViewModel internal constructor(application: Application, categoryId: Long, onlyImportantInd: Boolean) : AndroidViewModel(application) {
+class NotesListViewModel internal constructor(
+    application: Application,
+    private val categoryId: Long,
+    onlyImportantInd: Boolean
+) : AndroidViewModel(application) {
 
     /**
      * The data source this ViewModel will fetch results from.
@@ -15,11 +19,12 @@ class NotesListViewModel internal constructor(application: Application, category
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
 
-
-    val listTitle : LiveData<String> = when {
-        // Using Transformations.map to get title of the category by category id
+    val listTitle: LiveData<String> = when {
+        // Using Transformations.map to get title of the category by category
         // LiveData<String> <- LiveData<Category>
-        categoryId != 0L -> Transformations.map(notesRepository.getCategoryById(categoryId)) { category -> category.title }
+        categoryId != 0L -> Transformations.map(notesRepository.getCategorySummaryById(categoryId)) { categorySummary ->
+            "${categorySummary?.title?.capitalize()} (${categorySummary?.notesCount})"
+        }
         onlyImportantInd -> MutableLiveData("Important Notes")
         else -> MutableLiveData("My Notes")
     }
@@ -62,6 +67,12 @@ class NotesListViewModel internal constructor(application: Application, category
         }
     }
 
+    fun deleteCategory() {
+        viewModelScope.launch {
+            notesRepository.deleteCategory(categoryId)
+        }
+    }
+
     fun toggleIsImportantNote(noteId: Long) {
         // find note with provided id and toggle it's important value
         notes.value?.first { note -> note.id == noteId }?.let {
@@ -74,7 +85,11 @@ class NotesListViewModel internal constructor(application: Application, category
     /**
      * Factory for constructing ViewModel as we need to pass application
      */
-    class Factory(val application: Application, private val categoryId: Long, private val onlyImportantInd: Boolean) : ViewModelProvider.Factory {
+    class Factory(
+        val application: Application,
+        private val categoryId: Long,
+        private val onlyImportantInd: Boolean
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(NotesListViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")

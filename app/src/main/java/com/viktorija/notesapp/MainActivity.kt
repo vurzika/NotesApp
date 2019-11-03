@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     // drawerLayout variable
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    // navigation contoller
+    // navigation controller
     private lateinit var navController: NavController
 
     private val viewModel: MainActivityViewModel by viewModels {
@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Open Important Notes category
         navView.menu.findItem(R.id.important_fragment).setOnMenuItemClickListener {
             navController.navigate(NavigationDirections.openImportantNotes())
             drawerLayout.closeDrawers()
@@ -93,9 +94,14 @@ class MainActivity : AppCompatActivity() {
                 categoryMenu.clear()
 
                 // for each category create menu item in drawer
-                it.forEach {category ->
+                it.forEach { category ->
                     val categoryMenuItem =
-                        categoryMenu.add(groupId, category.id.toInt(), Menu.NONE, category.title.capitalize());
+                        categoryMenu.add(
+                            groupId,
+                            category.id.toInt(),
+                            Menu.NONE,
+                            "${category.title.capitalize()} (${category.notesCount})"
+                        );
                     categoryMenuItem.setIcon(R.drawable.ic_radio_button)
                     categoryMenuItem.setOnMenuItemClickListener {
                         // Open selected category

@@ -138,6 +138,13 @@ class NotesListFragment : Fragment() {
                 viewModel.deleteAllNotes()
                 return true
             }
+            R.id.action_delete_category -> {
+                viewModel.deleteCategory()
+
+                // exit from screen once category is removed
+                findNavController().navigate(NotesListFragmentDirections.openAllTasks())
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
