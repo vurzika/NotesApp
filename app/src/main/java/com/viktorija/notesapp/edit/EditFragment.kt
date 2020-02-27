@@ -50,10 +50,11 @@ class EditFragment : Fragment() {
         }
 
         // When we get the note from view model, update text fields
-        viewModel.note.observe(this, Observer {
+        viewModel.note.observe(viewLifecycleOwner, Observer {
             // if we get the data then set text
             it?.let {
                 binding.noteTitle.setText(it.title)
+                // using .setSelection to put cursor at the end
                 binding.noteTitle.setSelection(binding.noteTitle.text.length)
 
                 binding.noteText.setText(it.text)
@@ -74,7 +75,7 @@ class EditFragment : Fragment() {
         spinner.adapter = categoryListAdapter
 
         // Set list of available categories
-        viewModel.categories.observe(this, Observer {
+        viewModel.categories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 categoryListAdapter.clear()
 
@@ -90,7 +91,7 @@ class EditFragment : Fragment() {
             }
         })
 
-        viewModel.eventErrorMessage.observe(this, Observer {
+        viewModel.eventErrorMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
                 Toast.makeText(
                     context,

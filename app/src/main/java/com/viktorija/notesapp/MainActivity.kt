@@ -15,7 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.viktorija.notesapp.data.database.Category
@@ -43,10 +43,12 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         // Setup navigation with drawer layout
-        navController = this.findNavController(R.id.nav_host_fragment)
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
         // Setup appBarConfiguration to let application know
         // which menu fragments are top level fragments and connect that with drawer
+        // (customized appBarConfiguration)
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.notes_list_fragment),
             binding.drawerLayout
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                             category.id.toInt(),
                             Menu.NONE,
                             "${category.title.capitalize()} (${category.notesCount})"
-                        );
+                        )
                     categoryMenuItem.setIcon(R.drawable.ic_radio_button)
                     categoryMenuItem.setOnMenuItemClickListener {
                         // Open selected category

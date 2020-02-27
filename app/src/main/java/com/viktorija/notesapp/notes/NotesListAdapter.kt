@@ -8,12 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.viktorija.notesapp.data.database.Note
 import com.viktorija.notesapp.databinding.NotesListItemBinding
 
-// Modify the constructor of the NotesListAdapter class to receive a
+// Modifying the constructor of the NotesListAdapter class to receive a
 // val clickListener: NoteClickListener - to handle clicks on the note items
-
-// Change the class signature of SleepNightAdapter to extend ListAdapter.
-// Add SleepNight as the first argument to the ListAdapter, before SleepNightAdapter.ViewHolder.
-// Add SleepNightDiffCallback() as a parameter to the constructor.
+// Adding SleepNightDiffCallback() as a parameter to the constructor.
 // The ListAdapter will use this to figure out what changed in the list.
 class NotesListAdapter(private val clickListener: NoteClickListener) :
     ListAdapter<Note, NotesListAdapter.ViewHolder>(NoteDiffCallback()) {
@@ -30,7 +27,9 @@ class NotesListAdapter(private val clickListener: NoteClickListener) :
     // Create ViewHolder class that extends RecyclerView.ViewHolder.
     class ViewHolder(val binding: NotesListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        // noteId is used in method initSwipeToDelete in NotesListFragment
         var noteId: Long = 0
+            // make sure that this is read only property
             private set
 
         fun bind(item: Note, clickListener: NoteClickListener) {

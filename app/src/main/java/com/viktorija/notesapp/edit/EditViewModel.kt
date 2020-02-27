@@ -13,8 +13,18 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     // The data source this ViewModel will fetch results from.
     private val notesRepository = NotesRepository.getInstance(AppDatabase.getInstance(application))
 
+    // boolean. If noteId is not null - we are in edit mode
+    val editMode = noteId != 0L
+
     // backing property for note variable
-    private var _note: LiveData<Note>
+    private var _note: LiveData<Note> = if (editMode) {
+        // if edit mode then load from database
+        notesRepository.getNoteById(noteId)
+    } else {
+        // initialize with default note values
+        MutableLiveData<Note>(Note("", "", false))
+    }
+
     val note: LiveData<Note>
         get() = _note
 
@@ -27,19 +37,6 @@ class EditViewModel internal constructor(application: Application, noteId: Long)
     private val _eventErrorMessage = MutableLiveData<String>()
     val eventErrorMessage: LiveData<String>
         get() = _eventErrorMessage
-
-    // boolean. If noteId is not null - we are in edit mode
-    val editMode = noteId != 0L
-
-    init {
-        _note = if (editMode) {
-            // if edit mode then load from database
-            notesRepository.getNoteById(noteId)
-        } else {
-            // initialize with default note values
-            MutableLiveData<Note>(Note("", "", false))
-        }
-    }
 
     // Saving note object that is currently owned by view model
     // (could be both new note or note that was previously loaded from database)
